@@ -12,7 +12,7 @@ public class Company {
     private String name;
     @OneToMany(mappedBy = "company")
     private List<Rent> rents;
-    @ManyToMany
+    @ManyToMany(mappedBy = "companies")
     private List<Vehicle> vehicles;
 
     public Company() {

@@ -1,5 +1,6 @@
 package com.codinglouis.rentingapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -7,12 +8,14 @@ import java.util.List;
 @Entity
 public class Brand {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer brand_id;
     private String brandName;
     @OneToMany(
-            mappedBy = "brand"
+            mappedBy = "brand",
+            cascade = CascadeType.ALL
     )
+    @JsonIgnore
     private List<Vehicle> vehicles;
 
     public Brand() {
