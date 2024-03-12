@@ -1,8 +1,10 @@
 package com.codinglouis.rentingapp.controllers;
 
 import com.codinglouis.rentingapp.models.Brand;
+import com.codinglouis.rentingapp.models.Company;
 import com.codinglouis.rentingapp.models.Vehicle;
 import com.codinglouis.rentingapp.repositories.BrandRepository;
+import com.codinglouis.rentingapp.repositories.CompanyRepository;
 import com.codinglouis.rentingapp.repositories.VehicleRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,8 @@ public class VehicleController {
     private final BrandRepository brandRepository;
     private final VehicleRepository vehicleRepository;
 
-    public VehicleController(BrandRepository brandRepository, VehicleRepository vehicleRepository) {
+
+    public VehicleController(BrandRepository brandRepository, VehicleRepository vehicleRepository, CompanyRepository companyRepository) {
         this.brandRepository = brandRepository;
         this.vehicleRepository = vehicleRepository;
     }
@@ -47,6 +50,7 @@ public class VehicleController {
 
         return ResponseEntity.ok("Vehicle created");
     }
+
     @PutMapping("/{vehicle_id}")
     public Vehicle updatVehicle(
             @PathVariable("vehicle_id") Integer vehicle_id,

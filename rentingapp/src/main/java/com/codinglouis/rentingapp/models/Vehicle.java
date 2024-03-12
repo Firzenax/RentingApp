@@ -1,5 +1,6 @@
 package com.codinglouis.rentingapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public class Vehicle {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "companies_vehicles",
             joinColumns = {
@@ -23,6 +24,7 @@ public class Vehicle {
                     @JoinColumn(name = "company_id")
             }
     )
+    @JsonIgnore
     private List<Company> companies;
 
     public Vehicle() {
