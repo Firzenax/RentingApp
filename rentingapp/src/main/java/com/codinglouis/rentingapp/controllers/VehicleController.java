@@ -6,6 +6,7 @@ import com.codinglouis.rentingapp.models.Vehicle;
 import com.codinglouis.rentingapp.repositories.BrandRepository;
 import com.codinglouis.rentingapp.repositories.CompanyRepository;
 import com.codinglouis.rentingapp.repositories.VehicleRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,7 @@ public class VehicleController {
         return vehicleRepository.findById(vehicle_id);
     }
     @PostMapping
+    @Transactional
     public ResponseEntity<String> createVehicle(
             @RequestBody Vehicle vehicle,
             @RequestParam Integer brand_id

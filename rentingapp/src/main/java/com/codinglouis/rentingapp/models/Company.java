@@ -1,5 +1,7 @@
 package com.codinglouis.rentingapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -7,10 +9,11 @@ import java.util.List;
 @Entity
 public class Company {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer company_id;
     private String name;
     @OneToMany(mappedBy = "company")
+    @JsonIgnore
     private List<Rent> rents;
     @ManyToMany(mappedBy = "companies")
     private List<Vehicle> vehicles;

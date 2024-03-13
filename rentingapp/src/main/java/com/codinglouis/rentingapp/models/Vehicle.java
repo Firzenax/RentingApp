@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Vehicle {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer vehicle_id;
     private String vehicleName;
     @ManyToOne
@@ -26,15 +26,18 @@ public class Vehicle {
     )
     @JsonIgnore
     private List<Company> companies;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Rent rent;
 
     public Vehicle() {
     }
 
-    public Vehicle(Integer id, String vehicleName, Brand brand, List<Company> companies) {
+    public Vehicle(Integer id, String vehicleName, Brand brand, List<Company> companies, Rent rent) {
         this.vehicle_id = id;
         this.vehicleName = vehicleName;
         this.brand = brand;
         this.companies = companies;
+        this.rent = rent;
     }
 
     public Integer getId() {
@@ -67,5 +70,13 @@ public class Vehicle {
 
     public void setCompanies(List<Company> companies) {
         this.companies = companies;
+    }
+
+    public Rent getRent() {
+        return rent;
+    }
+
+    public void setRent(Rent rent) {
+        this.rent = rent;
     }
 }

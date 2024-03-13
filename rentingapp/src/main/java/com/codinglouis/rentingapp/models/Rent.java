@@ -1,26 +1,33 @@
 package com.codinglouis.rentingapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 public class Rent {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer rent_id;
     @OneToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "vehicle_id")
+    @JsonIgnore
+    private Vehicle vehicle;
 
     public Rent() {
     }
 
-    public Rent(Integer rent_id, User user, Company company) {
+    public Rent(Integer rent_id, User user, Company company, Vehicle vehicle) {
         this.rent_id = rent_id;
         this.user = user;
         this.company = company;
+        this.vehicle = vehicle;
     }
 
     public Integer getRent_id() {
@@ -45,5 +52,13 @@ public class Rent {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 }
