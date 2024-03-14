@@ -12,10 +12,10 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer company_id;
     private String name;
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Rent> rents;
-    @ManyToMany(mappedBy = "companies")
+    @ManyToMany(mappedBy = "companies", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Vehicle> vehicles;
 
     public Company() {

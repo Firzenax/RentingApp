@@ -14,7 +14,7 @@ public class Vehicle {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "companies_vehicles",
             joinColumns = {

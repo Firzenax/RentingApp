@@ -79,4 +79,17 @@ public class RentController {
 
         return ResponseEntity.ok("Rent created successfully");
     }
+
+    @DeleteMapping("{rent_id}")
+    public ResponseEntity<String> deleteRent(
+            @PathVariable("rent_id") Integer rent_id
+    ) throws  Exception{
+        try {
+            rentRepository.deleteById(rent_id);
+            return ResponseEntity.ok().body("Rent deleted");
+        }
+        catch (Error error){
+            throw new Exception("Error during rent deletion : " + error.getMessage());
+        }
+    }
 }

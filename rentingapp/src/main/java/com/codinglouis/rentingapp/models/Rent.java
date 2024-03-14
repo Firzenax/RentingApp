@@ -3,6 +3,8 @@ package com.codinglouis.rentingapp.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 public class Rent {
     @Id
@@ -19,6 +21,10 @@ public class Rent {
     @JoinColumn(name = "vehicle_id")
     @JsonIgnore
     private Vehicle vehicle;
+
+    private LocalDate rentStartDate;
+
+    private LocalDate rendEndDate;
 
     public Rent() {
     }

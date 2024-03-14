@@ -9,3 +9,6 @@ spring:
       ddl-auto: update
     database: postgresql
     show-sql: true
+  mvc:
+    format:
+      date: dd/MM/yyyy
