@@ -1,5 +1,6 @@
 package com.codinglouis.rentingapp.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -10,30 +11,29 @@ public class Rent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer rent_id;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vehicle_id")
+    @JoinColumn(name = "companyVehicle_id")
     @JsonIgnore
-    private Vehicle vehicle;
-
+    private CompanyVehicle companyVehicle;
     private LocalDate rentStartDate;
-
     private LocalDate rendEndDate;
 
-    public Rent() {
-    }
 
-    public Rent(Integer rent_id, User user, Company company, Vehicle vehicle) {
+    public Rent(Integer rent_id, User user, Company company, CompanyVehicle companyVehicle, LocalDate rentStartDate, LocalDate rendEndDate) {
         this.rent_id = rent_id;
         this.user = user;
-        this.company = company;
-        this.vehicle = vehicle;
+        this.companyVehicle = companyVehicle;
+        this.rentStartDate = rentStartDate;
+        this.rendEndDate =rendEndDate;
+    }
+
+    public Rent() {
+
     }
 
     public Integer getRent_id() {
@@ -52,19 +52,27 @@ public class Rent {
         this.user = user;
     }
 
-    public Company getCompany() {
-        return company;
+    public LocalDate getRentStartDate() {
+        return rentStartDate;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setRentStartDate(LocalDate rentStartDate) {
+        this.rentStartDate = rentStartDate;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public LocalDate getRendEndDate() {
+        return rendEndDate;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public void setRendEndDate(LocalDate rendEndDate) {
+        this.rendEndDate = rendEndDate;
+    }
+
+    public CompanyVehicle getCompanyVehicle() {
+        return companyVehicle;
+    }
+
+    public void setCompanyVehicle(CompanyVehicle companyVehicle) {
+        this.companyVehicle = companyVehicle;
     }
 }

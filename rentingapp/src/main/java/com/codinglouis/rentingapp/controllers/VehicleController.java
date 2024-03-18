@@ -62,7 +62,7 @@ public class VehicleController {
             vehicle.setVehicleName(updated_vehicle.getVehicleName());
             return vehicleRepository.save(vehicle);
         }).orElseGet(() -> {
-            updated_vehicle.setId(vehicle_id);
+            updated_vehicle.setVehicle_id(vehicle_id);
             return vehicleRepository.save(updated_vehicle);
         });
 

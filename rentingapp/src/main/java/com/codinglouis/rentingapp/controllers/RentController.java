@@ -1,17 +1,14 @@
 package com.codinglouis.rentingapp.controllers;
 
-import com.codinglouis.rentingapp.models.Company;
-import com.codinglouis.rentingapp.models.Rent;
-import com.codinglouis.rentingapp.models.User;
-import com.codinglouis.rentingapp.models.Vehicle;
-import com.codinglouis.rentingapp.repositories.CompanyRepository;
-import com.codinglouis.rentingapp.repositories.RentRepository;
-import com.codinglouis.rentingapp.repositories.UserRepository;
-import com.codinglouis.rentingapp.repositories.VehicleRepository;
+import com.codinglouis.rentingapp.models.*;
+import com.codinglouis.rentingapp.repositories.*;
 import jakarta.transaction.Transactional;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,15 +17,15 @@ import java.util.Optional;
 public class RentController {
 
     private final RentRepository rentRepository;
-    private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
-    private final VehicleRepository vehicleRepository;
 
-    public RentController(RentRepository rentRepository, CompanyRepository companyRepository, UserRepository userRepository, VehicleRepository vehicleRepository) {
+    private final CompanyVehicleRepository companyVehicleRepository;
+
+
+    public RentController(RentRepository rentRepository, UserRepository userRepository, CompanyVehicleRepository companyVehicleRepository) {
         this.rentRepository = rentRepository;
-        this.companyRepository = companyRepository;
         this.userRepository = userRepository;
-        this.vehicleRepository = vehicleRepository;
+        this.companyVehicleRepository = companyVehicleRepository;
     }
     @GetMapping
     public List<Rent> getAllRents(){
@@ -45,51 +42,33 @@ public class RentController {
         }
 
     }
-
-    @PostMapping
+    @PostMapping("/user/{user_id}")
     @Transactional
-    public ResponseEntity<String> createRent(
-            @RequestParam Integer company_id,
-            @RequestParam Integer vehicle_id,
-            @RequestParam Integer user_id
-    ) {
-        Optional<Company> optionalCompany = companyRepository.findById(company_id);
-        Optional<Vehicle> optionalVehicle = vehicleRepository.findById(vehicle_id);
+    public Rent createRent(
+            @PathVariable("user_id") Integer user_id,
+            @RequestParam Integer company_vehicle_id,
+            @RequestBody RentDates rentDates
+            ) throws Exception{
         Optional<User> optionalUser = userRepository.findById(user_id);
+        Optional<CompanyVehicle> optionalCompanyVehicle = companyVehicleRepository.findById(company_vehicle_id);
 
-        if (optionalCompany.isEmpty()) return ResponseEntity.badRequest().body("Company does not exist");
-        if (optionalVehicle.isEmpty()) return ResponseEntity.badRequest().body("Vehicle does not exist");
-        if (optionalUser.isEmpty()) return ResponseEntity.badRequest().body("User does not exist");
+        if(optionalUser.isEmpty()) throw new Exception("No user with this id");
+        if(optionalCompanyVehicle.isEmpty()) throw new Exception("No company vehicle with this id");
 
-        Company company = optionalCompany.get();
-        Vehicle vehicle = optionalVehicle.get();
         User user = optionalUser.get();
-
-        // Check if the vehicle is associated with the company
-        if (!company.getVehicles().contains(vehicle)) {
-            return ResponseEntity.badRequest().body("Vehicle is not associated with the company");
-        }
+        CompanyVehicle companyVehicle = optionalCompanyVehicle.get();
 
         Rent rent = new Rent();
-        rent.setCompany(company);
-        rent.setVehicle(vehicle);
+
         rent.setUser(user);
+        rent.setCompanyVehicle(companyVehicle);
+        rent.setRentStartDate(rentDates.getRentStartDateStr());
+        rent.setRendEndDate(rentDates.getRentEndDateStr());
 
-        rentRepository.save(rent);
+        companyVehicle.setRent(rent);
 
-        return ResponseEntity.ok("Rent created successfully");
-    }
+        return rentRepository.save(rent);
 
-    @DeleteMapping("{rent_id}")
-    public ResponseEntity<String> deleteRent(
-            @PathVariable("rent_id") Integer rent_id
-    ) throws  Exception{
-        try {
-            rentRepository.deleteById(rent_id);
-            return ResponseEntity.ok().body("Rent deleted");
-        }
-        catch (Error error){
-            throw new Exception("Error during rent deletion : " + error.getMessage());
-        }
+
     }
 }

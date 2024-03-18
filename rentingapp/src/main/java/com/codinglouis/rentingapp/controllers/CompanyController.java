@@ -1,8 +1,10 @@
 package com.codinglouis.rentingapp.controllers;
 
 import com.codinglouis.rentingapp.models.Company;
+import com.codinglouis.rentingapp.models.CompanyVehicle;
 import com.codinglouis.rentingapp.models.Vehicle;
 import com.codinglouis.rentingapp.repositories.CompanyRepository;
+import com.codinglouis.rentingapp.repositories.CompanyVehicleRepository;
 import com.codinglouis.rentingapp.repositories.VehicleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,13 @@ public class CompanyController {
 
     private final CompanyRepository companyRepository;
 
+    private final CompanyVehicleRepository companyVehicleRepository;
     private final VehicleRepository vehicleRepository;
 
-    public CompanyController(CompanyRepository companyRepository, VehicleRepository vehicleRepository) {
+    public CompanyController(CompanyRepository companyRepository, CompanyVehicleRepository companyVehicleRepository,
+                             VehicleRepository vehicleRepository) {
         this.companyRepository = companyRepository;
+        this.companyVehicleRepository = companyVehicleRepository;
         this.vehicleRepository = vehicleRepository;
     }
 
@@ -46,31 +51,7 @@ public class CompanyController {
     }
 
 
-    @PostMapping("/{company_id}")
-    @Transactional
-    public Company addVehicle(
-            @RequestParam Integer vehicle_Id,
-            @PathVariable("company_id") Integer company_id
-    ) throws Exception {
-        Optional<Vehicle> optionalVehicle = vehicleRepository.findById(vehicle_Id);
-        Optional<Company> optionalCompany = companyRepository.findById(company_id);
 
-        if (optionalVehicle.isEmpty()) throw new Exception("Vehicle does not exist");
-        if (optionalCompany.isEmpty()) throw new Exception("Company does not exist");
-
-        Company company = optionalCompany.get();
-        Vehicle vehicle = optionalVehicle.get();
-
-        // Add vehicle to the company's list of vehicles
-        company.getVehicles().add(vehicle);
-
-        // Add company to the vehicle's list of companies
-        vehicle.getCompanies().add(company);
-
-        companyRepository.save(company);
-
-        return company;
-    }
 
     @PutMapping("/{company_id}")
     public Company updateCompany(
@@ -104,24 +85,24 @@ public class CompanyController {
     @Transactional
     public ResponseEntity<String> removeVehicleFromCompany(
             @PathVariable("company_id") Integer companyId,
-            @PathVariable("vehicle_id") Integer vehicleId
+            @PathVariable("vehicle_id") Integer companyVehicleId
     ) {
         Optional<Company> optionalCompany = companyRepository.findById(companyId);
-        Optional<Vehicle> optionalVehicle = vehicleRepository.findById(vehicleId);
+        Optional<CompanyVehicle> optionalCompanyVehicle = companyVehicleRepository.findById(companyVehicleId);
 
         if (optionalCompany.isEmpty()) return ResponseEntity.badRequest().body("Company does not exist");
-        if (optionalVehicle.isEmpty()) return ResponseEntity.badRequest().body("Vehicle does not exist");
+        if (optionalCompanyVehicle.isEmpty()) return ResponseEntity.badRequest().body("Vehicle does not exist");
 
         Company company = optionalCompany.get();
-        Vehicle vehicle = optionalVehicle.get();
+        CompanyVehicle companyVehicle = optionalCompanyVehicle.get();
 
         // Remove the vehicle from the company's list of vehicles
-        if (!company.getVehicles().remove(vehicle)) {
+        if (!company.getCompanyVehicles().remove(companyVehicle)) {
             return ResponseEntity.badRequest().body("Vehicle is not associated with the company");
         }
 
         // Remove the company from the vehicle's list of companies
-        vehicle.getCompanies().remove(company);
+        companyRepository.delete(companyVehicle.getCompany());
 
         companyRepository.save(company);
 

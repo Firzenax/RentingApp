@@ -14,38 +14,29 @@ public class Vehicle {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(
-            name = "companies_vehicles",
-            joinColumns = {
-                    @JoinColumn(name = "vehicle_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "company_id")
-            }
+    @OneToMany(
+            mappedBy = "vehicle",
+            cascade = CascadeType.ALL
     )
     @JsonIgnore
-    private List<Company> companies;
-    @OneToOne(cascade = CascadeType.ALL)
-    private Rent rent;
+    private List<CompanyVehicle> companyVehicles;
 
     public Vehicle() {
     }
 
-    public Vehicle(Integer id, String vehicleName, Brand brand, List<Company> companies, Rent rent) {
-        this.vehicle_id = id;
+    public Vehicle(Integer vehicle_id, String vehicleName, Brand brand, List<CompanyVehicle> companyVehicles) {
+        this.vehicle_id = vehicle_id;
         this.vehicleName = vehicleName;
         this.brand = brand;
-        this.companies = companies;
-        this.rent = rent;
+        this.companyVehicles = companyVehicles;
     }
 
-    public Integer getId() {
+    public Integer getVehicle_id() {
         return vehicle_id;
     }
 
-    public void setId(Integer id) {
-        this.vehicle_id = id;
+    public void setVehicle_id(Integer vehicle_id) {
+        this.vehicle_id = vehicle_id;
     }
 
     public String getVehicleName() {
@@ -64,19 +55,11 @@ public class Vehicle {
         this.brand = brand;
     }
 
-    public List<Company> getCompanies() {
-        return companies;
+    public List<CompanyVehicle> getCompanyVehicles() {
+        return companyVehicles;
     }
 
-    public void setCompanies(List<Company> companies) {
-        this.companies = companies;
-    }
-
-    public Rent getRent() {
-        return rent;
-    }
-
-    public void setRent(Rent rent) {
-        this.rent = rent;
+    public void setCompanyVehicles(List<CompanyVehicle> companyVehicles) {
+        this.companyVehicles = companyVehicles;
     }
 }

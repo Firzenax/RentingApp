@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "_user")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,7 +12,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     @JoinColumn(name = "rent_id")
     private Rent rent;
 

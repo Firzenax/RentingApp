@@ -12,20 +12,20 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer company_id;
     private String name;
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "company",
+            cascade = CascadeType.ALL
+    )
     @JsonIgnore
-    private List<Rent> rents;
-    @ManyToMany(mappedBy = "companies", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Vehicle> vehicles;
+    private List<CompanyVehicle> companyVehicles;
 
     public Company() {
     }
 
-    public Company(Integer company_id, String name, List<Rent> rents, List<Vehicle> vehicles) {
+    public Company(Integer company_id, String name, List<CompanyVehicle> companyVehicles) {
         this.company_id = company_id;
         this.name = name;
-        this.rents = rents;
-        this.vehicles = vehicles;
+        this.companyVehicles = companyVehicles;
     }
 
     public Integer getCompany_id() {
@@ -44,19 +44,11 @@ public class Company {
         this.name = name;
     }
 
-    public List<Rent> getRents() {
-        return rents;
+    public List<CompanyVehicle> getCompanyVehicles() {
+        return companyVehicles;
     }
 
-    public void setRents(List<Rent> rents) {
-        this.rents = rents;
-    }
-
-    public List<Vehicle> getVehicles() {
-        return vehicles;
-    }
-
-    public void setVehicles(List<Vehicle> vehicles) {
-        this.vehicles = vehicles;
+    public void setCompanyVehicles(List<CompanyVehicle> companyVehicles) {
+        this.companyVehicles = companyVehicles;
     }
 }

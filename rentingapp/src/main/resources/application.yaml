@@ -11,4 +11,4 @@ spring:
     show-sql: true
   mvc:
     format:
-      date: dd/MM/yyyy
+      date: dd-MM-yyyy
