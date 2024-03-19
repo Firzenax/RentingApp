@@ -1,5 +1,6 @@
 package com.codinglouis.rentingapp.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -11,14 +12,13 @@ public class Rent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer rent_id;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
+    @JsonBackReference
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "companyVehicle_id")
-    @JsonIgnore
     private CompanyVehicle companyVehicle;
     private LocalDate rentStartDate;
     private LocalDate rendEndDate;

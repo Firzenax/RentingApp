@@ -1,6 +1,10 @@
 package com.codinglouis.rentingapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "_user")
@@ -12,14 +16,14 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    @JoinColumn(name = "rent_id")
-    private Rent rent;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonManagedReference
+    private List<Rent> rent;
 
     public User() {
     }
 
-    public User(Integer user_id, String firstName, String lastName, String email, Rent rent) {
+    public User(Integer user_id, String firstName, String lastName, String email, List<Rent> rent) {
         this.user_id = user_id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,11 +63,11 @@ public class User {
         this.email = email;
     }
 
-    public Rent getRent() {
+    public List<Rent> getRent() {
         return rent;
     }
 
-    public void setRent(Rent rent) {
+    public void setRent(List<Rent> rent) {
         this.rent = rent;
     }
 }

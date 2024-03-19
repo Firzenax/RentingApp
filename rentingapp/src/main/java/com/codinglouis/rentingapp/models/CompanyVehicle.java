@@ -10,6 +10,7 @@ public class CompanyVehicle {
     private Integer companyVehicle_id;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id")
+    @JsonIgnore
     private Company company;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")

@@ -20,13 +20,17 @@ public class CompanyController {
     private final CompanyRepository companyRepository;
 
     private final CompanyVehicleRepository companyVehicleRepository;
-    private final VehicleRepository vehicleRepository;
 
+    /**
+     *
+     * @param companyRepository
+     * @param companyVehicleRepository
+     * @param vehicleRepository
+     */
     public CompanyController(CompanyRepository companyRepository, CompanyVehicleRepository companyVehicleRepository,
                              VehicleRepository vehicleRepository) {
         this.companyRepository = companyRepository;
         this.companyVehicleRepository = companyVehicleRepository;
-        this.vehicleRepository = vehicleRepository;
     }
 
     @GetMapping
@@ -49,9 +53,6 @@ public class CompanyController {
 
         return ResponseEntity.ok().body("company created");
     }
-
-
-
 
     @PutMapping("/{company_id}")
     public Company updateCompany(

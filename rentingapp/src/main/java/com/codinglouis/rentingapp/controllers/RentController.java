@@ -31,7 +31,7 @@ public class RentController {
     public List<Rent> getAllRents(){
         return rentRepository.findAll();
     }
-    @GetMapping("{rent_id}")
+    @GetMapping("/{rent_id}")
     public Optional<Rent> getRentById(
             @PathVariable("rent_id") Integer rent_id
     ) throws Exception{

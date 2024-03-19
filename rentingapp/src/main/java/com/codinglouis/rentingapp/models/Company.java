@@ -16,7 +16,6 @@ public class Company {
             mappedBy = "company",
             cascade = CascadeType.ALL
     )
-    @JsonIgnore
     private List<CompanyVehicle> companyVehicles;
 
     public Company() {
