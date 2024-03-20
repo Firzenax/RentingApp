@@ -1,6 +1,8 @@
 package com.codinglouis.rentingapp.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,7 +17,7 @@ public class Brand {
             mappedBy = "brand",
             cascade = CascadeType.ALL
     )
-    @JsonIgnore
+    @JsonManagedReference
     private List<Vehicle> vehicles;
 
     public Brand() {
