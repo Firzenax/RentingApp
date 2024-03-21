@@ -13,11 +13,18 @@ const Navbar: React.FC = () => {
           </div>
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
+              <h1 className="text-gray-300 font-serif px-3 py-2 rounded-md text-sm font-bold">
+                CatchACar
+              </h1>
+            </div>
+          </div>
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-4">
               <Link
                 to="/rent"
                 className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               >
-                Renting
+                SignIn
               </Link>
             </div>
           </div>
