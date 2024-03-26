@@ -4,7 +4,7 @@ type User = {
   user_id: number;
   firstName: string;
   lastName: string;
-  email: string;
+  email: string | undefined;
   rent: Rent[];
 };
 
