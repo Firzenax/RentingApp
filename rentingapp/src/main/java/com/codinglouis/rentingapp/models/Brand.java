@@ -17,7 +17,7 @@ public class Brand {
             mappedBy = "brand",
             cascade = CascadeType.ALL
     )
-    @JsonManagedReference
+    @JsonBackReference
     private List<Vehicle> vehicles;
 
     public Brand() {

@@ -15,7 +15,7 @@ public class Vehicle {
     private String vehicleName;
     @ManyToOne
     @JoinColumn(name = "brand_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Brand brand;
     @OneToMany(
             mappedBy = "vehicle",

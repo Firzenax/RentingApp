@@ -20,28 +20,28 @@ public class UserController {
     public UserController(UserRepository userRepository, RentRepository rentRepository) {
         this.userRepository = userRepository;
     }
+
     @GetMapping
-    public List<User> getAllUser(){
+    public List<User> getAllUser() {
         return userRepository.findAll();
     }
 
     @GetMapping("{user_id}")
     public Optional<User> getUserById(
-            @PathVariable("user_id") Integer user_id
-    ) throws Exception{
-        try{
+            @PathVariable("user_id") Integer user_id) throws Exception {
+        try {
             return userRepository.findById(user_id);
-        }catch (Error error){
+        } catch (Error error) {
             throw new Exception(error.getMessage() + "user doesn't exist");
         }
     }
+
     @PostMapping
     public User createUser(
-            @RequestBody User user
-    )throws Exception{
-        try{
+            @RequestBody User user) throws Exception {
+        try {
             return userRepository.save(user);
-        }catch (Error error){
+        } catch (Error error) {
             throw new Exception(error.getMessage() + "user doesn't exist");
         }
     }
